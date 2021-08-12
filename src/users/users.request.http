@@ -8,7 +8,7 @@ Content-Type: application/json
 }
 
 ### Find a user with given ID
-GET http://localhost:3000/auth/1
+GET http://localhost:3000/auth/15
 
 ### Find all users with a given email
 GET http://localhost:3000/auth?email=teste1@email.com
