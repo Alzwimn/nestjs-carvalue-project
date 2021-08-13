@@ -17,6 +17,7 @@ import { UserDto } from 'src/users/dtos/user.dto';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 
 @Controller('auth')
+@Serialize(UserDto)
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
@@ -25,10 +26,8 @@ export class UsersController {
     return this.usersService.create(body.email, body.password);
   }
 
-  @Serialize(UserDto)
   @Get('/:id')
   async findUser(@Param('id') id: string) {
-    console.log('[Handler] is running');
     const user = await this.usersService.findOne(parseInt(id));
     if (!user) throw new NotFoundException('User not found');
     return user;
