@@ -7,8 +7,7 @@ import {
   Param,
   Query,
   Delete,
-  NotFoundException,
-  UseInterceptors,
+  NotFoundException
 } from '@nestjs/common';
 import { CreateUserDto } from 'src/users/dtos/create-user.dto';
 import { UpdateUserDto } from 'src/users/dtos/update-user.dto';
@@ -28,6 +27,11 @@ export class UsersController {
   @Post('/signup')
   createUser(@Body() body: CreateUserDto) {
     return this.authService.signup(body.email, body.password);
+  }
+
+  @Post('/signin')
+  signin(@Body() body: CreateUserDto) {
+    return this.authService.signin(body.email, body.password);
   }
 
   @Get('/:id')
