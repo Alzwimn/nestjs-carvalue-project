@@ -9,7 +9,7 @@ import {
   Delete,
   NotFoundException,
   Session,
-  UseGuards
+  UseGuards,
 } from '@nestjs/common';
 import { CreateUserDto } from 'src/users/dtos/create-user.dto';
 import { UpdateUserDto } from 'src/users/dtos/update-user.dto';

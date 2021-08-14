@@ -10,9 +10,13 @@ import { CurrentUserInterceptor } from 'src/users/interceptors/current-user.inte
 @Module({
   imports: [TypeOrmModule.forFeature([User])],
   controllers: [UsersController],
-  providers: [UsersService, AuthService, {
-    provide: APP_INTERCEPTOR,
-    useClass: CurrentUserInterceptor
-  }],
+  providers: [
+    UsersService,
+    AuthService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: CurrentUserInterceptor,
+    },
+  ],
 })
 export class UsersModule {}
