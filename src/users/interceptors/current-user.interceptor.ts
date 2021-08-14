@@ -1,9 +1,13 @@
-import { NestInterceptor, ExecutionContext, CallHandler, Injectable} from '@nestjs/common';
+import {
+  NestInterceptor,
+  ExecutionContext,
+  CallHandler,
+  Injectable,
+} from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class CurrentUserInterceptor implements NestInterceptor {
-
   constructor(private usersService: UsersService) {}
 
   async intercept(context: ExecutionContext, handler: CallHandler) {
