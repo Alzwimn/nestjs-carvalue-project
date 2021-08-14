@@ -11,7 +11,7 @@ export class AuthService {
 
   async signup(email: string, password: string) {
     const users = await this.usersService.find(email);
-    console.log(users);
+
     if (users.length) {
       throw new BadRequestException('Email in use');
     }
@@ -19,7 +19,7 @@ export class AuthService {
     const hash = (await scrypt(password, salt, 32)) as Buffer;
 
     const result = salt + '.' + hash.toString('hex');
-    console.log(salt, hash, result);
+
     const user = await this.usersService.create(email, result);
     return user;
   }
@@ -37,7 +37,7 @@ export class AuthService {
     if (storedHash !== hash.toString('hex')) {
       throw new BadRequestException('Bad Password');
     }
-    
+
     return user;
   }
 }
