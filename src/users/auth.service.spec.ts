@@ -63,8 +63,10 @@ describe('Auth Service', () => {
   });
 
   it('Should throw an error if an sign in with an invalid password', async () => {
-    await service.signup('email@email.com', 'secretePasswd')
-    await expect(service.signin('email@email.com', 'invalidpassword')).rejects.toThrow();
+    await service.signup('email@email.com', 'secretePasswd');
+    await expect(
+      service.signin('email@email.com', 'invalidpassword'),
+    ).rejects.toThrow();
   });
 
   it('Should return a user if correct password is provided', async () => {

@@ -10,13 +10,18 @@ describe('UsersController', () => {
   let fakeAuthService: Partial<AuthService>;
 
   beforeEach(async () => {
-
     fakeUsersService = {
       findOne: (id: number) => {
-        return Promise.resolve({ id, email: 'test@email.com', password: 'passwd'} as User);
+        return Promise.resolve({
+          id,
+          email: 'test@email.com',
+          password: 'passwd',
+        } as User);
       },
       find: (email: string) => {
-        return Promise.resolve([{ id: 1, email, password: 'password'} as User]);
+        return Promise.resolve([
+          { id: 1, email, password: 'password' } as User,
+        ]);
       },
       // remove: () => {},
       // update: () => {},
@@ -26,7 +31,6 @@ describe('UsersController', () => {
       // signin: (email: string, password: string) => {},
       // signup: (email: string, password: string) => {}
     };
-
 
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UsersController],
@@ -38,14 +42,20 @@ describe('UsersController', () => {
         {
           provide: AuthService,
           useValue: fakeAuthService,
-        }
-      ]
+        },
+      ],
     }).compile();
 
     controller = module.get<UsersController>(UsersController);
   });
 
-  it('should be defined', () => {
+  it('Should be defined', () => {
     expect(controller).toBeDefined();
+  });
+
+  it('Should return a list of users with given email', async () => {
+    const users = await controller.findAllUsers('test@email.com');
+    expect(users.length).toEqual(1);
+    expect(users[0].email).toEqual('test@email.com');
   });
 });
