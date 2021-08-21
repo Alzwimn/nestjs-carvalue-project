@@ -2,16 +2,28 @@ import { Test } from '@nestjs/testing';
 import { UsersService } from 'src/users/users.service';
 import { AuthService } from 'src/users/auth.service';
 import { User } from 'src/users/user.entity';
+import { randomBytes, scrypt as _scrypt } from 'crypto';
 
 describe('Auth Service', () => {
   let service: AuthService;
   let fakeUsersService: Partial<UsersService>;
 
   beforeEach(async () => {
+    const users: User[] = [];
     fakeUsersService = {
-      find: () => Promise.resolve([]),
-      create: (email: string, password: string) =>
-        Promise.resolve({ id: 1, email, password } as User),
+      find: (email: string) => {
+        const filteredUsers = users.filter((user) => user.email === email);
+        return Promise.resolve(filteredUsers);
+      },
+      create: (email: string, password: string) => {
+        const user = {
+          id: Math.floor(Math.random() * 999),
+          email,
+          password,
+        } as User;
+        users.push(user);
+        return Promise.resolve(user);
+      },
     };
 
     const module = await Test.createTestingModule({
@@ -59,5 +71,11 @@ describe('Auth Service', () => {
         { email: 'teste@email.com', password: 'passwd', id: 1 } as User,
       ]);
     await expect(service.signin('email@email.com', 'pass')).rejects.toThrow();
+  });
+
+  it('Should return a user if correct password is provided', async () => {
+    await service.signup('teste@email.com', 'passwd');
+    const user = await service.signin('teste@email.com', 'passwd');
+    expect(user).toBeDefined();
   });
 });
