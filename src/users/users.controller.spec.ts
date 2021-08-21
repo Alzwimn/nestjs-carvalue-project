@@ -63,4 +63,9 @@ describe('UsersController', () => {
     const user = await controller.findUser('1');
     expect(user).toBeDefined();
   });
+
+  it('Should throw an error if user with given id is not found', async () => {
+    fakeUsersService.findOne = (id: number) => null;
+    await expect(controller.findUser('1')).rejects.toThrow();
+  });
 });
