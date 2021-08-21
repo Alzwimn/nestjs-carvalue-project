@@ -52,4 +52,12 @@ describe('Auth Service', () => {
   it('Should throw an error if user sign in with an unused email', async () => {
     await expect(service.signin('email@email.com', 'passwd')).rejects.toThrow();
   });
+
+  it('Should throw an error if an sign in with an invalid password', async () => {
+    fakeUsersService.find = () =>
+      Promise.resolve([
+        { email: 'teste@email.com', password: 'passwd', id: 1 } as User,
+      ]);
+    await expect(service.signin('email@email.com', 'pass')).rejects.toThrow();
+  });
 });
